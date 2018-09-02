@@ -37,17 +37,17 @@
 // fs.readdir(process.argv[2], callback)
 
 //MAKE IT MODULAR
-const myModule = require('./modular')
-const fs = require('fs')
+// const myModule = require('./modular')
+// const fs = require('fs')
 
-const callback = (err, data) => {
-  if(err){
-    console.log(err)
-  } else {
-    console.log(data)
-  }
-}
-myModule(process.argv[2], process.argv[3], callback)
+// const callback = (err, data) => {
+//   if(err){
+//     console.log(err)
+//   } else {
+//     console.log(data)
+//   }
+// }
+// myModule(process.argv[2], process.argv[3], callback)
 
 //HTTP CLIENT
 // const http = require('http')
@@ -86,23 +86,63 @@ myModule(process.argv[2], process.argv[3], callback)
 // const cheater = () => {
 //   let counter = 0
 //   let arr = []
+//   let timer = 0
 
 //   const callback = (res) => {
 //       let storage = ""
+//       let num = counter;
+//       counter++
       
 //       res.on('data', (chunk) => {
 //           storage += chunk;
 //       });
       
 //       res.on('end', () => {
-//           arr[counter] = storage.toString()
+//           arr[num] = storage.toString()
+//           timer++
+//           if(timer === 3){
+//             arr.forEach( (entry)=> {
+//               console.log(entry)
+//             })
+//           }
 //       });
 //     }
     
-//     http.get(process.argv[2], callback)
-//     http.get(process.argv[3], callback)
-//     http.get(process.argv[4], callback)
+//   http.get(process.argv[2], callback)
+//   http.get(process.argv[3], callback)
+//   http.get(process.argv[4], callback)
+  
 
 // }
 
 // cheater();
+
+//Timer Server
+const net = require('net')
+const server = net.createServer(function listener(socket){
+  const format = (num) => {
+    if(num < 10) {
+      return num = "0" + num;
+    } else {
+      return num
+    }
+  }
+
+  let date = new Date();
+  let year = date.getFullYear();
+  let month = format(date.getMonth()+1) ;
+  let day = format(date.getDate());
+  let hour = format(date.getHours());
+  let min = format(date.getMinutes());
+
+
+  let data = `${year}-${month}-${day} ${hour}:${min}`
+
+
+  // socket.write(data)
+
+  socket.end(data + "\n")
+})
+
+server.listen(process.argv[2])
+
