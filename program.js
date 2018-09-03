@@ -118,31 +118,41 @@
 // cheater();
 
 //Timer Server
-const net = require('net')
-const server = net.createServer(function listener(socket){
-  const format = (num) => {
-    if(num < 10) {
-      return num = "0" + num;
-    } else {
-      return num
-    }
-  }
+// const net = require('net')
+// const server = net.createServer(function listener(socket){
+//   const format = (num) => {
+//     if(num < 10) {
+//       return num = "0" + num;
+//     } else {
+//       return num
+//     }
+//   }
 
-  let date = new Date();
-  let year = date.getFullYear();
-  let month = format(date.getMonth()+1) ;
-  let day = format(date.getDate());
-  let hour = format(date.getHours());
-  let min = format(date.getMinutes());
-
-
-  let data = `${year}-${month}-${day} ${hour}:${min}`
+//   let date = new Date();
+//   let year = date.getFullYear();
+//   let month = format(date.getMonth()+1) ;
+//   let day = format(date.getDate());
+//   let hour = format(date.getHours());
+//   let min = format(date.getMinutes());
 
 
-  // socket.write(data)
+//   let data = `${year}-${month}-${day} ${hour}:${min}`
 
-  socket.end(data + "\n")
+
+//   // socket.write(data)
+
+//   socket.end(data + "\n")
+// })
+
+// server.listen(process.argv[2])
+
+//HTTP FILE Server
+
+const http = require('http')
+const fs = require('fs')
+
+const server = http.createServer( function (req, res)  {
+  fs.createReadStream(process.argv[3]).pipe(res)
 })
 
 server.listen(process.argv[2])
-
