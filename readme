@@ -1,0 +1,4 @@
+type learnyounode to start
+learnyounode print - log the prompt
+learnyounode run program.js -  testing
+learnyounode verify program.js - pass test
