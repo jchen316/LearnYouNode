@@ -159,16 +159,61 @@
 
 //HTTP UpperCaser
 
-const http = require("http")
-const fs = require('fs')
-const map = require('through2-map')
+// const http = require("http")
+// const fs = require('fs')
+// const map = require('through2-map')
 
-const server = http.createServer( function (req, res) {
-  if(req.method === "POST"){
-    req.pipe(map(function (chunk){
-      return chunk.toString().toUpperCase()
-    })).pipe(res)
+// const server = http.createServer( function (req, res) {
+//   if(req.method === "POST"){
+//     req.pipe(map(function (chunk){
+//       return chunk.toString().toUpperCase()
+//     })).pipe(res)
+//   }
+// })
+
+// server.listen(process.argv[2])
+
+//HTTP JSON API Server
+
+const http = require('http')
+const url = require('url')
+
+const server = http.createServer( function (req, res){
+  let message
+  const urlObj = url.parse(req.url, true)
+  const pathName = urlObj.pathname
+  const time = urlObj.query.iso
+
+  if(pathName === "/api/parsetime"){
+    let date = new Date(time)
+    message = 
+      {  
+        "hour": date.getHours(),  
+        "minute": date.getMinutes(),  
+        "second": date.getSeconds() 
+      }  
+    
+  } else if (pathName === "/api/unixtime") {
+    let unix = Date.parse(time) 
+    message = {
+      unixtime : unix
+    }
+  }
+
+  if(pathName)
+
+
+
+  if (message) {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(message));
+  }
+  else {
+    res.writeHead(404);
+    res.end();
   }
 })
 
+
 server.listen(process.argv[2])
+
